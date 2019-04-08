@@ -8,15 +8,21 @@ module.exports = {
         //publicPath: './dist/'
     },
     module:{
-        rules: [{
-            test: /\.(js)$/,
-            exclude: /(node_modules)/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    preset: ['@babel/preset-env']
-                }
+        rules: [
+            
+            {
+                test: /\.(jpe?g|png|gif|svg)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit:400000,
+                            outputPath: './images'
+                        }
+                    },
+                    'image-webpack-loader'
+                ]
             }
-        }]
+        ]
     }
 }

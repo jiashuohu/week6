@@ -7,16 +7,31 @@ module.exports = {
     output:{
         path:path.join(__dirname,'./dist'),
         filename:'bundle.js',
-        //publicPath:'./dist/'
+        // publicPath:'./dist/'
     },
+
     module:{
         rules:[
             {
-                use: ExtractTextPlugin.extract({
-                  use: "css-loader"
-                }),
+                
+                
                 test: /\.css$/,
-              },
+                use: ExtractTextPlugin.extract({
+                    use: [{
+                        loader:'css-loader',
+                        options:{
+                            url:false}
+                    },
+              {
+                  loader:'postcss-loader'
+              }]
+            }),
+        },
+    
+
+
+            
+        
         {
             test:/\.(jpe?g|png|gif|svg)$/,
             use:[
@@ -24,21 +39,30 @@ module.exports = {
                 loader:'url-loader',
                 options:{
                     limit:400000,
-                    outputPath:'./images',
-                    publicPath: './images'
+                    outputPath:'./images'
                 }
                 },
                 'image-webpack-loader'
         
     ]
-}
+},
 
+{
+    test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+    use:{
+        loader:'file-loader',
+        options: {
+            outputPath: 'css/fonts',
+            name: '[name].[ext]',
+        },
+    }
+}
 ]
 },
 plugins: [
-    new ExtractTextPlugin('./css/style.css'),
-    new HtmlWebpackPlugin({
-        template: 'assets/index.html'
-    })
-  ]
-  }
+  new ExtractTextPlugin('assets/css/style.css'),
+  new HtmlWebpackPlugin({
+      template: 'assets/index.html'
+  })
+]
+}
